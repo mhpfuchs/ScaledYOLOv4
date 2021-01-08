@@ -15,10 +15,14 @@ def attempt_download(weights):
 
     r = 1  # return
     if len(weights) > 0 and not os.path.isfile(weights):
-        d = {'',
+        d = {'yolov4-p5.pt':'1aXZZE999sHMP1gev60XhNChtHPRMH3Fz',
+                'yolov4-p6.pt':'1aB7May8oPYzBqbgwYSZHuATPXyxh9xnf',
+                'yolov4-p7.pt':'18fGlzgEJTkUEiBG4hW00pyedJKNnYLP3'
              }
 
         file = Path(weights).name
+        print(weights)
+        print(file)
         if file in d:
             r = gdrive_download(id=d[file], name=weights)
 
