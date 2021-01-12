@@ -1144,19 +1144,20 @@ def plot_one_box(x, img, color=None, label=None, line_thickness=None):
     if label:
         tf = max(tl - 1, 1)  # font thickness
         t_size = cv2.getTextSize(label, 0, fontScale=tl / 3, thickness=tf)[0]
-        c2 = c1[0] + t_size[0], c1[1] - t_size[1] - 3
+        l1 = c1
+        l2 = c1[0] + t_size[0], c1[1] - t_size[1] - 3
         # Move label if it would be cropped at top of image
-        if c2[1] < 0:
+        if l2[1] < 0:
             # Shift label down so it aligns with inside top of the box
-            c1 = c1[0], int(x[1]) + t_size[1] + 3
-            c2 = c2[0], int(x[1])
+            l1 = l1[0], c1[1] + t_size[1] + 4
+            l2 = l2[0], c1[1] + 1
         # Move label if it would be cropped at right side of image
-        if c2[0] > img.shape[1] - 1:
+        if l2[0] > img.shape[1] - 1:
             # Shift label left so it aligns with right of the box
-            c1 = int(x[2]) - t_size[0], c1[1]
-            c2 = int(x[2]), c2[1]
-        cv2.rectangle(img, c1, c2, color, -1, cv2.LINE_AA)  # filled
-        cv2.putText(img, label, (c1[0], c1[1] - 2), 0, tl / 3, [225, 255, 255], thickness=tf, lineType=cv2.LINE_AA)
+            l1 = c2[0] - t_size[0], l1[1]
+            l2 = c2[0], l2[1]
+        cv2.rectangle(img, l1, l2, color, -1, cv2.LINE_AA)  # filled
+        cv2.putText(img, label, (l1[0], l1[1] - 2), 0, tl / 3, [225, 255, 255], thickness=tf, lineType=cv2.LINE_AA)
 
 
 def plot_wh_methods():  # from utils.utils import *; plot_wh_methods()
