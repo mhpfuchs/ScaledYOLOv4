@@ -1145,6 +1145,17 @@ def plot_one_box(x, img, color=None, label=None, line_thickness=None):
         tf = max(tl - 1, 1)  # font thickness
         t_size = cv2.getTextSize(label, 0, fontScale=tl / 3, thickness=tf)[0]
         c2 = c1[0] + t_size[0], c1[1] - t_size[1] - 3
+        # Find optimal origin
+        # label would be cropped at top
+        if c2[1] < 0:
+            # shift it down so label aligns with top of the image
+            c1 = c1[0], t_size[1] + 4
+            c2 = c2[0], 1
+        # label would be cropped at right
+        if c2[0] > img.shape[1] - 1:
+            # shift it left so label aligns with right of the image
+            c1 = img.shape[1] - t_size[0] - 1, c1[1]
+            c2 = img.shape[1] - 1, c2[1]
         cv2.rectangle(img, c1, c2, color, -1, cv2.LINE_AA)  # filled
         cv2.putText(img, label, (c1[0], c1[1] - 2), 0, tl / 3, [225, 255, 255], thickness=tf, lineType=cv2.LINE_AA)
 
