@@ -54,7 +54,26 @@ def detect(save_img=False):
 
     # Get names and colors
     names = model.module.names if hasattr(model, 'module') else model.names
-    colors = [[random.randint(0, 255) for _ in range(3)] for _ in range(len(names))]
+    if opt.fixed_colors:
+        color_list = [[128,   0, 128], # purple
+                      [128, 128,   0], # teal
+                      [  0, 128, 128], # olive
+                      [128,   0,   0], # navy
+                      [  0, 128,   0], # green
+                      [  0,   0, 128], # maron
+                      [  0,   0,   0], # black
+                      [128, 128, 128], # gray
+                      [255,   0,   0], # blue
+                      [  0, 255,   0], # lime
+                      [  0,   0, 255], # red
+                      [255,   0, 255], # magenta
+                      [255, 255,   0], # cyan
+                      [  0, 255, 255], # yellow
+                      [192, 192, 192]  # silver
+                     ]
+        colors = color_list[:len(names)]
+    else:
+        colors = [[random.randint(0, 255) for _ in range(3)] for _ in range(len(names))]
 
     # Run inference
     t0 = time.time()
@@ -160,6 +179,7 @@ if __name__ == '__main__':
     parser.add_argument('--augment', action='store_true', help='augmented inference')
     parser.add_argument('--update', action='store_true', help='update all models')
     parser.add_argument('--show-conf', action='store_true', help='show confidence score beside class')
+    parser.add_argument('--fixed-colors', action='store_true', help='always use the same colors for the classes')
     opt = parser.parse_args()
     print(opt)
 
