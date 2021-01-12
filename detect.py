@@ -77,6 +77,8 @@ def detect(save_img=False):
 
     # Run inference
     t0 = time.time()
+    t_sum = 0
+    processed_frames = 0
     img = torch.zeros((1, 3, imgsz, imgsz), device=device)  # init img
     _ = model(img.half() if half else img) if device.type != 'cpu' else None  # run once
     for path, img, im0s, vid_cap in dataset:
@@ -131,6 +133,7 @@ def detect(save_img=False):
 
             # Print time (inference + NMS)
             print('%sDone. (%.3fs)' % (s, t2 - t1))
+            t_sum += t2 - t1
 
             # Stream results
             if view_img:
@@ -155,10 +158,15 @@ def detect(save_img=False):
                         vid_writer = cv2.VideoWriter(save_path, cv2.VideoWriter_fourcc(*fourcc), fps, (w, h))
                     vid_writer.write(im0)
 
+        processed_frames += 1
+
     if save_txt or save_img:
         print('Results saved to %s' % Path(out))
         if platform == 'darwin' and not opt.update:  # MacOS
             os.system('open ' + save_path)
+
+    # Print average time (inference + NMS)
+    print('Average: (%.3fs)' % (t_sum / processed_frames))
 
     print('Done. (%.3fs)' % (time.time() - t0))
 
