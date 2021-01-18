@@ -4,6 +4,7 @@ import os
 import random
 import time
 from pathlib import Path
+from shutil import copyfile
 
 import numpy as np
 import torch.distributed as dist
@@ -45,6 +46,7 @@ def train(hyp, opt, device, tb_writer=None):
         yaml.dump(hyp, f, sort_keys=False)
     with open(log_dir / 'opt.yaml', 'w') as f:
         yaml.dump(vars(opt), f, sort_keys=False)
+    copyfile(opt.cfg, str(log_dir / 'cfg.yaml'))
 
     # Configure
     cuda = device.type != 'cpu'
