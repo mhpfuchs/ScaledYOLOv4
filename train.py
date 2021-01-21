@@ -48,6 +48,10 @@ def train(hyp, opt, device, tb_writer=None):
         yaml.dump(vars(opt), f, sort_keys=False)
     copyfile(opt.cfg, str(log_dir / 'cfg.yaml'))
 
+    # Copy best weights from previous run if resuming
+    if opt.resume:
+        copyfile(opt.weights.replace('last', 'best'), best)
+
     # Configure
     cuda = device.type != 'cpu'
     init_seeds(2 + rank)
