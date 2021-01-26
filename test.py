@@ -42,7 +42,7 @@ def test(data,
         device = select_device(opt.device, batch_size=batch_size)
         merge, save_txt = opt.merge, opt.save_txt  # use Merge NMS, save *.txt labels
         if save_txt:
-            out = Path('inference/output')
+            out = Path(save_dir)
             if os.path.exists(out):
                 shutil.rmtree(out)  # delete output folder
             os.makedirs(out)  # make new output folder
@@ -247,6 +247,7 @@ def test(data,
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(prog='test.py')
     parser.add_argument('--weights', nargs='+', type=str, default='yolov4-p5.pt', help='model.pt path(s)')
+    parser.add_argument('--savedir', type=str, default='test/', help='output directory')
     parser.add_argument('--data', type=str, default='data/coco128.yaml', help='*.data path')
     parser.add_argument('--batch-size', type=int, default=32, help='size of each image batch')
     parser.add_argument('--img-size', type=int, default=640, help='inference size (pixels)')
@@ -275,7 +276,8 @@ if __name__ == '__main__':
              opt.save_json,
              opt.single_cls,
              opt.augment,
-             opt.verbose)
+             opt.verbose,
+             save_dir=opt.savedir)
 
     elif opt.task == 'study':  # run over a range of settings and save/plot
         for weights in ['']:
