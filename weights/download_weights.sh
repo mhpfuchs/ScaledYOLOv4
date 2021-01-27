@@ -9,7 +9,10 @@ sys.path.append('../')
 
 from utils.google_utils import attempt_download
 
-for x in ['p5', 'p6', 'p7']:
-    attempt_download('yolov4-%s.pt' % x)
+for x in [ 'yolov4l-mish_.pt',
+              'yolov4-p5.pt', 'yolov4-p5_.pt',
+              'yolov4-p6.pt', 'yolov4-p6_.pt',
+              'yolov4-p7.pt']:
+    attempt_download('%s' % x)
 
 EOF

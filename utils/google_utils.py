@@ -15,8 +15,11 @@ def attempt_download(weights):
 
     r = 1  # return
     if len(weights) > 0 and not os.path.isfile(weights):
-        d = {'yolov4-p5.pt':'1aXZZE999sHMP1gev60XhNChtHPRMH3Fz',
+        d = {'yolov4l-mish_.pt':'1dJc-W6ih37SDew7KPzDq9BF9TbICji5s',
+                'yolov4-p5.pt':'1aXZZE999sHMP1gev60XhNChtHPRMH3Fz',
+                'yolov4-p5_.pt':'15CL05ZufFk2krbRS993fqlG40Wb0HTyr',
                 'yolov4-p6.pt':'1aB7May8oPYzBqbgwYSZHuATPXyxh9xnf',
+                'yolov4-p6_.pt':'1Q8oG3lBVVoS0-UwNOBsDsPkq9VKs9UcC',
                 'yolov4-p7.pt':'18fGlzgEJTkUEiBG4hW00pyedJKNnYLP3'
              }
 
