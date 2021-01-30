@@ -477,7 +477,8 @@ if __name__ == '__main__':
         assert opt.local_rank == -1, 'DDP mode not implemented for --evolve'
         opt.notest, opt.nosave = True, True  # only test/save final epoch
         # ei = [isinstance(x, (int, float)) for x in hyp.values()]  # evolvable indices
-        yaml_file = Path('runs/evolve/hyp_evolved.yaml')  # save best result here
+        evolve_log_dir = Path(opt.logdir) / 'evolve'
+        yaml_file = evolve_log_dir / 'hyp_evolved.yaml'  # save best result here
         if opt.bucket:
             os.system('gsutil cp gs://%s/evolve.txt .' % opt.bucket)  # download evolve.txt if exists
 
