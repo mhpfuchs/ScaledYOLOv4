@@ -143,7 +143,7 @@ def test(data,
                 box = xyxy2xywh(box)  # xywh
                 box[:, :2] -= box[:, 2:] / 2  # xy center to top-left corner
                 for p, b in zip(pred.tolist(), box.tolist()):
-                    jdict.append({'image_id': int(image_id) if image_id.isnumeric() else image_id,
+                    jdict.append({'image_id': int(image_id) if opt.data.endswith('coco.yaml') else image_id,
                                   'category_id': coco91class[int(p[5])],
                                   'bbox': [round(x, 3) for x in b],
                                   'score': round(p[4], 5)})
@@ -214,8 +214,8 @@ def test(data,
 
     # Save JSON
     if save_json and len(jdict):
-        f = 'detections_val2017_%s_results.json' % \
-            (weights.split(os.sep)[-1].replace('.pt', '') if isinstance(weights, str) else '')  # filename
+        f = ('%s/%s_%s_detections.json' % \
+            (opt.savedir, opt.task, weights[0].split(os.sep)[-1].replace('.pt', '') ))  # filename
         print('\nCOCO mAP with pycocotools... saving %s...' % f)
         with open(f, 'w') as file:
             json.dump(jdict, file)
@@ -224,8 +224,8 @@ def test(data,
             from pycocotools.coco import COCO
             from pycocotools.cocoeval import COCOeval
 
-            imgIds = [int(Path(x).stem) for x in dataloader.dataset.img_files]
-            cocoGt = COCO(glob.glob('../coco/annotations/instances_val*.json')[0])  # initialize COCO ground truth api
+            imgIds = [int(Path(x).stem) if opt.data.endswith('coco.yaml') else Path(x).stem for x in dataloader.dataset.img_files]
+            cocoGt = COCO(glob.glob('../flame-and-smoke-detector-dataset/coco/%s.json' % opt.task)[0])  # initialize COCO ground truth api
             cocoDt = cocoGt.loadRes(f)  # initialize COCO pred api
             cocoEval = COCOeval(cocoGt, cocoDt, 'bbox')
             cocoEval.params.imgIds = imgIds  # image IDs to evaluate
